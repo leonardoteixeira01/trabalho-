@@ -9,7 +9,7 @@ Entrega e apresentação: **terça, 08/12/2026**.
 
 | Arquivo | O que é |
 |---|---|
-| [`Projeto_Extensionista_Controle_de_Doacoes.docx`](Projeto_Extensionista_Controle_de_Doacoes.docx) | Documento final (v0.2), com as nove seções exigidas. Trechos **em amarelo** são pendências. |
+| [`Projeto_Extensionista_Controle_de_Doacoes.docx`](Projeto_Extensionista_Controle_de_Doacoes.docx) | Documento final (v0.3), com as nove seções exigidas. Trechos **em amarelo** são pendências. |
 | [`index.html`](index.html) | Portal da equipe: andamento dos entregáveis, cronograma, requisitos, avaliação e roteiro da apresentação. |
 | `Projeto Extensionista Documentação, Entregáveis e Avaliação.pdf` | Enunciado e rubrica do professor. |
 | [`anexos/H_Kit_de_contato_e_autorizacao.docx`](anexos/H_Kit_de_contato_e_autorizacao.docx) | Mensagens para contatar instituições, termo de autorização, registro de contatos e questionário para o Google Forms. |
