@@ -18,6 +18,7 @@ Entrega e apresentação: **terça, 08/12/2026**.
 | [`anexos/G_Matriz_de_rastreabilidade.xlsx`](anexos/G_Matriz_de_rastreabilidade.xlsx) | Matriz com destaque de lacunas e aba que confere se todo requisito tem história. |
 | [`anexos/I_Modelo_de_ata.docx`](anexos/I_Modelo_de_ata.docx) | Modelo de ata e pauta sugerida para a reunião de 24/11. |
 | [`anexos/C_Wireframes_rascunho.drawio`](anexos/C_Wireframes_rascunho.drawio) | Wireframes do login, menu e quatro telas, com perguntas para a validação (uma página por tela). |
+| [`mvp/`](mvp/README.md) | MVP funcional (bônus): abrir `mvp/index.html` no navegador. Testes: `node mvp/testes.js`. |
 | [`anexos/Roteiro_da_apresentacao.docx`](anexos/Roteiro_da_apresentacao.docx) | Divisão dos 7 minutos, falas sugeridas e perguntas individuais prováveis. |
 | [Issues](https://github.com/leonardoteixeira01/trabalho-/issues) | Backlog (H01–H08) e atividades (A1–A9) com etiquetas e marcos M1–M5. |
 
