@@ -107,11 +107,61 @@ function formatarData(iso) {
   return `${d}/${m}/${a}`;
 }
 
+/* Soma por unidade em texto: { kg: 8, L: 6 } → "8 kg + 6 L" (usada no resumo e no painel). */
+function formatarQuantidades(porUnidade) {
+  const partes = Object.entries(porUnidade || {}).map(([u, n]) => `${formatarNumero(n)} ${u}`);
+  return partes.join(" + ") || "—";
+}
+
+/* Número no padrão brasileiro, com no máximo 2 casas: 1234.5 → "1.234,5". */
+function formatarNumero(n) {
+  return Number(Number(n).toFixed(2)).toLocaleString("pt-BR");
+}
+
+/*
+ * Períodos rápidos dos botões de filtro (RF004 e RF006).
+ * hoje: "AAAA-MM-DD". Date.UTC ajusta sozinho dia 0 (último dia do mês anterior) e mês 0 (dezembro).
+ */
+function periodoRapido(chave, hoje) {
+  const [a, m, d] = hoje.split("-").map(Number);
+  const iso = (ano, mes, dia) => new Date(Date.UTC(ano, mes - 1, dia)).toISOString().slice(0, 10);
+  switch (chave) {
+    case "hoje": return { inicio: hoje, fim: hoje };
+    case "7dias": return { inicio: iso(a, m, d - 6), fim: hoje };
+    case "mes": return { inicio: iso(a, m, 1), fim: hoje };
+    case "mesPassado": return { inicio: iso(a, m - 1, 1), fim: iso(a, m, 0) };
+    default: return { inicio: "", fim: "" }; // "tudo"
+  }
+}
+
+/* RF003 + RF001 — quantas doações cada doador fez (lista de doadores). */
+function contarPorDoador(doacoes) {
+  const contagem = {};
+  for (const d of doacoes) if (d.doadorId) contagem[d.doadorId] = (contagem[d.doadorId] || 0) + 1;
+  return contagem;
+}
+
+/* Números da tela inicial: mês atual × mês anterior, doadores, última doação e totais por categoria. */
+function painel(doacoes, doadores, hoje) {
+  const mes = periodoRapido("mes", hoje);
+  const anterior = periodoRapido("mesPassado", hoje);
+  const recentes = ordenarRecentes(doacoes);
+  return {
+    doacoesMes: filtrarDoacoes(doacoes, mes, []).length,
+    doacoesMesAnterior: filtrarDoacoes(doacoes, anterior, []).length,
+    doadores: doadores.length,
+    ultima: recentes[0] || null,
+    recentes: recentes.slice(0, 5),
+    porCategoria: resumoPorCategoria(doacoes, mes.inicio, mes.fim).linhas,
+  };
+}
+
 const Regras = {
   CATEGORIAS, UNIDADES, PERFIS,
   validarDoacao, validarDoador, prepararDoador,
   podeEditarDoacao, podeVerContato,
   ordenarRecentes, filtrarDoacoes, resumoPorCategoria, formatarData,
+  formatarQuantidades, formatarNumero, periodoRapido, contarPorDoador, painel,
 };
 
 if (typeof module !== "undefined") module.exports = Regras;

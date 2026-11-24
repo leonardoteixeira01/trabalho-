@@ -76,4 +76,31 @@ teste("H06/RF006 — totais por categoria conferem com os registros do período"
   assert.equal(r.totalRegistros, 4);
 });
 
+teste("RF004/RF006 — períodos rápidos, inclusive virada de mês e de ano", () => {
+  assert.deepEqual(R.periodoRapido("hoje", "2026-11-25"), { inicio: "2026-11-25", fim: "2026-11-25" });
+  assert.deepEqual(R.periodoRapido("7dias", "2026-12-03"), { inicio: "2026-11-27", fim: "2026-12-03" });
+  assert.deepEqual(R.periodoRapido("mes", "2026-11-25"), { inicio: "2026-11-01", fim: "2026-11-25" });
+  assert.deepEqual(R.periodoRapido("mesPassado", "2026-11-25"), { inicio: "2026-10-01", fim: "2026-10-31" });
+  assert.deepEqual(R.periodoRapido("mesPassado", "2027-01-10"), { inicio: "2026-12-01", fim: "2026-12-31" });
+  assert.deepEqual(R.periodoRapido("tudo", "2026-11-25"), { inicio: "", fim: "" });
+});
+
+teste("Painel — números do mês, mês anterior, doadores e últimas doações", () => {
+  const p = R.painel(doacoes, doadores, "2026-11-25");
+  assert.equal(p.doacoesMes, 4);
+  assert.equal(p.doacoesMesAnterior, 1);
+  assert.equal(p.doadores, 1);
+  assert.equal(p.ultima.id, "c");
+  assert.deepEqual(p.recentes.map((d) => d.id), ["c", "b", "e", "a", "d"]);
+  assert.equal(p.porCategoria.find((l) => l.categoria === "Alimento").registros, 3);
+});
+
+teste("Doadores — contagem de doações e formatação de quantidades", () => {
+  assert.deepEqual(R.contarPorDoador(doacoes), { d1: 1 });
+  assert.equal(R.formatarQuantidades({ kg: 8, L: 6 }), "8 kg + 6 L");
+  assert.equal(R.formatarQuantidades({}), "—");
+  assert.equal(R.formatarQuantidades({ kg: 0.1 + 0.2 }), "0,3 kg");
+  assert.equal(R.formatarNumero(1234.5), "1.234,5");
+});
+
 console.log(`\n${ok} testes passaram.`);
