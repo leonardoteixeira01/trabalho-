@@ -5,13 +5,20 @@ Entrega e apresentação: **25/11/2026** (antecipadas pelo professor; antes eram
 
 **Equipe:** Leonardo Teixeira (coordenação), Luca Magalhães (escopo, protótipos e qualidade), Eduardo Cabral (requisitos) e Sergio Henriques (planejamento e backlog).
 
+## Links
+
+- **MVP (testar no navegador):** https://leonardoteixeira01.github.io/trabalho-/mvp/
+- **Portal do projeto:** https://leonardoteixeira01.github.io/trabalho-/
+- **Slides da apresentação:** https://claude.ai/artifact/6FDuJCFz6LQpXq3MECfh1G
+
+> No MVP, cada pessoa cria a própria conta no primeiro acesso: os dados ficam só no navegador de quem usa (não há servidor). Para ver o sistema com dados, entre como coordenação e use **Usuários → Carregar dados de exemplo**.
+
 ## Arquivos
 
 | Arquivo | O que é |
 |---|---|
 | [`Projeto_Extensionista_Controle_de_Doacoes.docx`](Projeto_Extensionista_Controle_de_Doacoes.docx) | Documento final (v1.0), com as nove seções exigidas, a situação na entrega e o plano de continuidade. |
 | [`index.html`](index.html) | Portal da equipe: andamento dos entregáveis, cronograma, requisitos, avaliação e roteiro da apresentação. |
-| `Projeto Extensionista Documentação, Entregáveis e Avaliação.pdf` | Enunciado e rubrica do professor. |
 | [`anexos/H_Kit_de_contato_e_autorizacao.docx`](anexos/H_Kit_de_contato_e_autorizacao.docx) | Mensagens para contatar instituições, termo de autorização, registro de contatos e questionário para o Google Forms. |
 | [`anexos/D_EAP.drawio`](anexos/D_EAP.drawio) | Diagrama da EAP. Abrir em [app.diagrams.net](https://app.diagrams.net) (Arquivo → Abrir). |
 | [`anexos/D_Cronograma_Gantt.xlsx`](anexos/D_Cronograma_Gantt.xlsx) | Cronograma com Gantt automático (as barras mudam ao editar Início/Fim) e aba de marcos. |
