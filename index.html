@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Portal da equipe do Projeto Extensionista de Engenharia de Software: Sistema de Cadastro e Controle de Doações (SCCD).">
+<title>SCCD · Projeto Extensionista</title>
+<style>
+  :root {
+    --navy: #0b1f3a;
+    --navy-2: #123c69;
+    --teal: #167d85;
+    --mint: #59d8c8;
+    --ink: #172033;
+    --muted: #5b6574;
+    --line: #dce5ee;
+    --bg: #f4f7fb;
+    --card: #ffffff;
+    --warn-bg: #fff4d6;
+    --warn-ink: #7a4b00;
+    --ok-bg: #e3f6ee;
+    --ok-ink: #11643f;
+    --todo-bg: #fde8e8;
+    --todo-ink: #8f1d1d;
+    --wip-bg: #e6eefb;
+    --wip-ink: #1d4b8f;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.55;
+  }
+  a { color: inherit; }
+  .container { width: min(1120px, 100% - 32px); margin: auto; }
+  section[id], main[id] { scroll-margin-top: 80px; }
+
+  /* Cabeçalho */
+  .top { background: var(--navy); color: #fff; position: sticky; top: 0; z-index: 10; box-shadow: 0 3px 18px #0002; }
+  .top .container { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+  .logo { font-weight: 800; font-size: 18px; text-decoration: none; white-space: nowrap; }
+  .logo span { color: var(--mint); }
+  .nav { display: flex; gap: 20px; overflow-x: auto; scrollbar-width: none; }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav a { text-decoration: none; font-size: 13px; font-weight: 700; white-space: nowrap; padding: 8px 0; }
+  .nav a:hover, .nav a:focus-visible { color: var(--mint); }
+
+  /* Hero */
+  .hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 62%, var(--teal) 100%); color: #fff; padding: 80px 0 70px; }
+  .hero-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 50px; align-items: center; }
+  .pill { display: inline-block; background: var(--mint); color: #082039; border-radius: 99px; padding: 7px 13px; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+  .hero h1 { font-size: clamp(38px, 5.5vw, 66px); line-height: 1.04; margin: 22px 0; }
+  .hero p { font-size: 18px; color: #d9e8f4; max-width: 680px; }
+  .btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+  .btn { display: inline-block; background: var(--mint); color: #082039; text-decoration: none; font-weight: 800; padding: 13px 18px; border-radius: 10px; }
+  .btn.ghost { background: transparent; color: #fff; border: 2px solid #ffffff55; }
+  .hero-card { background: var(--card); color: var(--ink); border-radius: 22px; padding: 26px; box-shadow: 0 25px 70px #00152b88; }
+  .hero-card h2 { margin: 0 0 14px; color: var(--navy-2); font-size: 20px; }
+  .hero-card dl { margin: 0; }
+  .hero-card dl div { display: flex; justify-content: space-between; gap: 14px; padding: 11px 0; border-bottom: 1px solid var(--line); }
+  .hero-card dl div:last-child { border: 0; }
+  .hero-card dt { color: var(--muted); font-size: 14px; }
+  .hero-card dd { margin: 0; font-weight: 700; text-align: right; }
+
+  /* Alerta */
+  .alert { background: var(--warn-bg); color: var(--warn-ink); border-left: 6px solid #e0a100; border-radius: 14px; padding: 18px 22px; margin-top: -34px; position: relative; box-shadow: 0 12px 30px #18314f14; }
+  .alert strong { display: block; font-size: 16px; margin-bottom: 4px; }
+  .alert p { margin: 0; }
+
+  /* Seções */
+  .section { padding: 72px 0; }
+  .section.alt { background: var(--card); }
+  .head { max-width: 760px; margin-bottom: 34px; }
+  .kicker { color: var(--teal); font-weight: 800; text-transform: uppercase; letter-spacing: .12em; font-size: 12px; }
+  .head h2 { font-size: clamp(30px, 4vw, 46px); line-height: 1.1; margin: 10px 0; }
+  .head p { color: var(--muted); margin: 0; }
+
+  .about { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .info { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 24px; box-shadow: 0 10px 30px #18314f0b; }
+  .info h3 { margin: 0 0 8px; color: var(--navy-2); }
+  .info p, .info li { margin: 0; color: var(--muted); font-size: 14px; }
+  .info ul { margin: 0; padding-left: 18px; }
+  .info li { margin: 5px 0; }
+
+  /* Status */
+  .badge { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; border-radius: 99px; padding: 4px 10px; }
+  .b-ok { background: var(--ok-bg); color: var(--ok-ink); }
+  .b-wip { background: var(--wip-bg); color: var(--wip-ink); }
+  .b-todo { background: var(--todo-bg); color: var(--todo-ink); }
+  .b-opt { background: #eef0f3; color: #4a5361; }
+
+  .deliverables { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .card { background: #f7fafc; border: 1px solid var(--line); border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 10px; transition: transform .2s, border-color .2s, box-shadow .2s; }
+  .card:hover { transform: translateY(-4px); border-color: var(--mint); box-shadow: 0 15px 35px #18314f17; }
+  .card-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .num { width: 40px; height: 40px; border-radius: 11px; background: var(--navy-2); color: #fff; display: grid; place-items: center; font-weight: 800; }
+  .card h3 { font-size: 18px; margin: 4px 0 0; }
+  .card p { font-size: 14px; color: var(--muted); margin: 0; }
+  .card .who { font-size: 13px; font-weight: 700; color: var(--teal); margin-top: auto; }
+  .card.optional { background: #e9fbf8; }
+  .card.optional .num { background: var(--teal); }
+
+  /* Cronograma */
+  .timeline { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+  .step { background: var(--navy); color: #fff; border-radius: 17px; padding: 20px; }
+  .step .date { color: var(--mint); font-weight: 800; font-size: 14px; }
+  .step h3 { margin: 18px 0 6px; font-size: 18px; }
+  .step p { font-size: 13px; color: #c6d8e7; margin: 0; }
+  .table-wrap { overflow-x: auto; margin-top: 28px; background: var(--card); border: 1px solid var(--line); border-radius: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { background: #eef3f8; color: var(--navy-2); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+  tr:last-child td { border-bottom: 0; }
+  td.past { color: #98a1ad; }
+
+  /* Requisitos */
+  .requirements { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .panel { background: var(--card); border-radius: 18px; padding: 26px; border-left: 6px solid var(--teal); box-shadow: 0 12px 35px #18314f0e; }
+  .panel h3 { color: var(--navy-2); margin-top: 0; }
+  .panel li { margin: 8px 0; color: #4d5968; }
+  .panel.dark { background: var(--navy); color: #fff; border-left-color: var(--mint); }
+  .panel.dark h3 { color: var(--mint); }
+  .panel.dark p { color: #d7e5ef; margin: 6px 0; }
+
+  /* Equipe */
+  .team { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .member { background: var(--card); border-radius: 18px; padding: 24px; border: 1px solid var(--line); text-align: center; }
+  .avatar { width: 72px; height: 72px; margin: 0 auto 14px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(135deg, var(--navy-2), var(--teal)); color: #fff; font-size: 21px; font-weight: 800; }
+  .member h3 { margin: 4px 0; }
+  .member p { font-size: 13px; color: #667180; margin: 4px 0; }
+  .member .secs { font-weight: 700; color: var(--teal); }
+
+  /* Avaliação */
+  .score { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .scorebox { border-radius: 20px; padding: 30px; background: var(--navy-2); color: #fff; }
+  .scorebox.green { background: var(--teal); }
+  .scorebox strong { font-size: 64px; line-height: 1; }
+  .scorebox h3 { margin: 10px 0 14px; }
+  .bar-row { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; font-size: 14px; margin: 10px 0; color: #e3eef6; }
+  .bar { grid-column: 1 / -1; height: 6px; background: #ffffff2e; border-radius: 99px; overflow: hidden; }
+  .bar i { display: block; height: 100%; background: var(--mint); }
+  .scorebox.green .bar i { background: #fff; }
+  .rules { margin-top: 22px; background: var(--card); border-radius: 18px; padding: 26px; border: 1px solid var(--line); }
+  .rules h3 { margin-top: 0; }
+  .rules-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 35px; }
+  .rules p { margin: 0; padding: 10px 0; border-bottom: 1px solid #e1e7ed; }
+  .rules b { color: var(--teal); }
+
+  /* Apresentação */
+  .pitch { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .slot { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
+  .slot .min { font-size: 30px; font-weight: 800; color: var(--teal); }
+  .slot h3 { margin: 6px 0; font-size: 16px; }
+  .slot p { margin: 0; font-size: 13px; color: var(--muted); }
+  .note { margin-top: 18px; color: var(--muted); font-size: 14px; }
+
+  .footer { background: #08182c; color: #c5d3df; padding: 36px 0; font-size: 14px; }
+  .footer .container { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+  .footer strong { color: #fff; }
+
+  @media (max-width: 900px) {
+    .hero-grid, .requirements { grid-template-columns: 1fr; }
+    .about, .deliverables, .team, .pitch { grid-template-columns: repeat(2, 1fr); }
+    .timeline { grid-template-columns: repeat(2, 1fr); }
+    .logo { font-size: 16px; }
+  }
+  @media (max-width: 560px) {
+    .about, .deliverables, .team, .score, .rules-grid, .timeline, .pitch { grid-template-columns: 1fr; }
+    .top .container { flex-direction: column; align-items: flex-start; gap: 0; padding: 10px 0 2px; }
+    .nav { width: 100%; gap: 16px; }
+    .hero { padding: 48px 0 64px; }
+    .section { padding: 56px 0; }
+    .hero-card dl div { flex-direction: column; gap: 2px; }
+    .hero-card dd { text-align: left; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .card, .card:hover { transition: none; transform: none; }
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="container">
+    <a class="logo" href="#inicio">PROJETO <span>EXTENSIONISTA</span></a>
+    <nav class="nav" aria-label="Seções">
+      <a href="#projeto">Projeto</a>
+      <a href="#entregaveis">Entregáveis</a>
+      <a href="#cronograma">Cronograma</a>
+      <a href="#requisitos">Requisitos</a>
+      <a href="#equipe">Equipe</a>
+      <a href="#avaliacao">Avaliação</a>
+      <a href="#apresentacao">Apresentação</a>
+    </nav>
+  </div>
+</header>
+
+<main id="inicio">
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <span class="pill">Engenharia de Software · Ciência da Computação</span>
+      <h1>Sistema de Cadastro e Controle de Doações</h1>
+      <p>Um sistema web simples para que uma instituição comunitária registre doadores e doações recebidas, encontre registros antigos e preste contas aos apoiadores sem depender de cadernos e planilhas soltas.</p>
+      <div class="btns">
+        <a class="btn" href="Projeto_Extensionista_Controle_de_Doacoes.docx">Baixar documento (v0.2)</a>
+        <a class="btn ghost" href="#entregaveis">Ver andamento</a>
+      </div>
+    </div>
+    <aside class="hero-card" aria-label="Resumo do projeto">
+      <h2>Situação em 23/11/2026</h2>
+      <dl>
+        <div><dt>Entrega e apresentação</dt><dd>Terça, 08/12</dd></div>
+        <div><dt>Instituição parceira</dt><dd><span class="badge b-todo">A definir</span></dd></div>
+        <div><dt>Processo</dt><dd>Incremental + Kanban</dd></div>
+        <div><dt>Backlog</dt><dd>8 histórias · 35 pts</dd></div>
+        <div><dt>Professor</dt><dd>Fernando M. S. Figueiredo</dd></div>
+      </dl>
+    </aside>
+  </div>
+</section>
+
+<div class="container">
+  <div class="alert" role="note">
+    <strong>Prioridade nº 1: definir a instituição parceira até 25/11</strong>
+    <p>Sem um público real não há elicitação, e “Elicitação, protótipo e requisitos” vale 2,0 pontos. Pelo calendário do professor, a elicitação deveria ter acontecido até 10/11. Contatar duas ou três instituições em paralelo e seguir com a primeira que autorizar.</p>
+  </div>
+</div>
+
+<section class="section" id="projeto">
+  <div class="container">
+    <div class="head">
+      <span class="kicker">O projeto</span>
+      <h2>Uma solução para uma necessidade real</h2>
+      <p>A documentação é o produto principal avaliado. Um MVP ou protótipo de alta fidelidade é opcional e vale bônus.</p>
+    </div>
+    <div class="about">
+      <article class="info">
+        <h3>Problema (hipótese)</h3>
+        <p>Registros manuais de doações ficam dispersos, dificultando consultas, a conferência do que foi recebido e a prestação de contas. A hipótese será confirmada na entrevista com a instituição.</p>
+      </article>
+      <article class="info">
+        <h3>Dentro do escopo</h3>
+        <ul>
+          <li>Acesso com usuário e senha</li>
+          <li>Cadastro de doadores e doações</li>
+          <li>Consulta por período, categoria e texto</li>
+          <li>Resumo por categoria e exportação em PDF</li>
+        </ul>
+      </article>
+      <article class="info">
+        <h3>Fora do escopo</h3>
+        <ul>
+          <li>Doações em dinheiro e pagamentos</li>
+          <li>Controle de saída e distribuição de itens</li>
+          <li>Integração com outros sistemas</li>
+          <li>Aplicativo nativo para celular</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="entregaveis">
+  <div class="container">
+    <div class="head">
+      <span class="kicker">Documento final</span>
+      <h2>Oito entregáveis obrigatórios e um opcional</h2>
+      <p>Tudo em um único documento, com sumário, controle de versões e o responsável de cada seção. Critério sem artefato de apoio não passa de 50%.</p>
+    </div>
+    <div class="deliverables">
+      <article class="card">
+        <div class="card-top"><span class="num">1</span><span class="badge b-wip">Em andamento</span></div>
+        <h3>Identificação</h3>
+        <p>Projeto, equipe e papéis definidos. Faltam a instituição parceira e a turma.</p>
+        <span class="who">Leonardo</span>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="num">2</span><span class="badge b-ok">Para revisão</span></div>
+        <h3>Processo de desenvolvimento</h3>
+        <p>Incremental com Kanban, justificado pelas perguntas-guia, com incrementos e rituais definidos.</p>
+        <span class="who">Leonardo</span>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="num">3</span><span class="badge b-wip">Em andamento</span></div>
+        <h3>TAP, escopo e viabilidade</h3>
+        <p>OBJ1/OBJ2 SMART, stakeholders, riscos com mitigação e recomendação. Falta validar com a instituição.</p>
+        <span class="who">Leonardo · Luca</span>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="num">4</span><span class="badge b-todo">Crítico</span></div>
+        <h3>Elicitação e protótipos</h3>
+        <p>Roteiro e questionário prontos, mas ainda não aplicados. Faltam os esboços desenhados e a persona.</p>
+        <span class="who">Eduardo · Luca</span>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="num">5</span><span class="badge b-wip">Rascunho</span></div>
+        <h3>Especificação de requisitos</h3>
+        <p>4 RU, 8 RF, 5 RNF e 4 RD com MoSCoW. Aguardam confirmação na elicitação.</p>
+        <span class="who">Eduardo</span>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="num">6</span><span class="badge b-wip">Em andamento</span></div>
+        <h3>EAP e cronograma</h3>
+        <p>EAP, marcos M1–M5, durações e Gantt no documento. Faltam o diagrama no draw.io e o arquivo do Gantt.</p>
+        <span class="who">Sergio</span>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="num">7</span><span class="badge b-wip">Em andamento</span></div>
+        <h3>Backlog e estimativas</h3>
+        <p>3 epics, 8 histórias e definição de pronto. Faltam a sessão real de Planning Poker e o quadro na ferramenta.</p>
+        <span class="who">Sergio</span>
+      </article>
+      <article class="card optional">
+        <div class="card-top"><span class="num">8</span><span class="badge b-opt">Opcional · +0,5</span></div>
+        <h3>MVP ou alta fidelidade</h3>
+        <p>Protótipo navegável no Figma das histórias Must. Só será feito se a elicitação terminar até 01/12.</p>
+        <span class="who">Luca</span>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="num">9</span><span class="badge b-wip">Em andamento</span></div>
+        <h3>Referências e anexos</h3>
+        <p>Referências, matriz de rastreabilidade completa e declaração de IA. Os anexos A–I dependem da elicitação.</p>
+        <span class="who">Leonardo · Sergio</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="cronograma">
+  <div class="container">
+    <div class="head">
+      <span class="kicker">Cronograma de recuperação</span>
+      <h2>Marcos até a entrega</h2>
+      <p>Caminho crítico de cerca de 8 dias; com a margem de 50% de Sommerville, 12 dias, dentro dos 15 dias disponíveis. A folga é pequena: qualquer atraso na instituição afeta a entrega.</p>
+    </div>
+    <div class="timeline">
+      <article class="step"><span class="date">26/11 · M1</span><h3>Fundação</h3><p>Instituição autorizada, TAP e escopo revisados.</p></article>
+      <article class="step"><span class="date">28/11 · M2</span><h3>Elicitação</h3><p>Entrevista, questionário e documentos analisados.</p></article>
+      <article class="step"><span class="date">02/12 · M3</span><h3>Validação</h3><p>Requisitos e protótipos aprovados pela instituição.</p></article>
+      <article class="step"><span class="date">04/12 · M4</span><h3>Planejamento</h3><p>EAP, Gantt, backlog com Planning Poker e matriz.</p></article>
+      <article class="step"><span class="date">08/12 · M5</span><h3>Entrega</h3><p>Documento entregue e apresentação de 7 minutos.</p></article>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <caption class="kicker" style="text-align:left;padding:14px 16px 0">Acompanhamentos semanais com o professor (terças)</caption>
+        <thead><tr><th>Data</th><th>O que mostrar</th></tr></thead>
+        <tbody>
+          <tr><td class="past">20/10 a 17/11</td><td class="past">Tema, processo, TAP, viabilidade, elicitação, requisitos e EAP</td></tr>
+          <tr><td><b>24/11</b></td><td>Cronograma, backlog e estimativas (levar o Planning Poker feito)</td></tr>
+          <tr><td><b>01/12</b></td><td>Revisão geral, MVP opcional e ensaio. Avaliação por pares (formulário individual)</td></tr>
+          <tr><td><b>08/12</b></td><td>Entrega do documento e apresentações</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="requisitos">
+  <div class="container">
+    <div class="head">
+      <span class="kicker">Seções 4, 5 e 7</span>
+      <h2>Requisitos ligados às histórias</h2>
+      <p>Todo requisito Essencial tem uma história, e toda história aponta para um requisito. O mesmo ID aparece no requisito, na EAP, no backlog e na matriz.</p>
+    </div>
+    <div class="table-wrap" style="margin-top:0">
+      <table>
+        <thead><tr><th>Requisito</th><th>Prioridade</th><th>História</th><th>Pontos</th></tr></thead>
+        <tbody>
+          <tr><td>RF008 · Exigir usuário e senha</td><td>Must</td><td>H08</td><td>3</td></tr>
+          <tr><td>RF001 · Cadastrar doador</td><td>Must</td><td>H01</td><td>3</td></tr>
+          <tr><td>RF002 · Registrar doação</td><td>Must</td><td>H02</td><td>5</td></tr>
+          <tr><td>RF003 · Listar doações</td><td>Must</td><td>H03</td><td>3</td></tr>
+          <tr><td>RF004 · Pesquisar por período, categoria e texto</td><td>Must</td><td>H04</td><td>5</td></tr>
+          <tr><td>RF005 · Corrigir registro (coordenação)</td><td>Should</td><td>H05</td><td>3</td></tr>
+          <tr><td>RF006 · Total por categoria no período</td><td>Should</td><td>H06</td><td>5</td></tr>
+          <tr><td>RF007 · Exportar resumo em PDF</td><td>Could</td><td>H07</td><td>8</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="requirements" style="margin-top:22px">
+      <article class="panel">
+        <h3>Elicitação planejada (3 técnicas)</h3>
+        <ul>
+          <li><b>Entrevista semiestruturada</b> com o responsável da instituição (26–27/11).</li>
+          <li><b>Questionário</b> anônimo com os voluntários (26–28/11).</li>
+          <li><b>Análise de documentos</b>: caderno ou planilha atual, com autorização.</li>
+        </ul>
+        <p style="color:var(--muted);font-size:14px">Pedir autorização antes de gravar ou fotografar e não registrar dados pessoais nos anexos.</p>
+      </article>
+      <article class="panel dark">
+        <h3>Exemplo de requisito do projeto</h3>
+        <p><b>[RF002] Registrar doação</b> · Essencial</p>
+        <p>O sistema deve permitir registrar uma doação com data, categoria, descrição e quantidade.</p>
+        <p><b>Pré-condição:</b> usuário autenticado; quantidade maior que zero (RD001).</p>
+        <p><b>Verificação:</b> salvar uma doação válida e encontrá-la na consulta.</p>
+        <p><b>Origem:</b> RU01 → história H02 (5 pts).</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="equipe">
+  <div class="container">
+    <div class="head">
+      <span class="kicker">Participantes</span>
+      <h2>Equipe do projeto</h2>
+      <p>Os papéis dividem a responsabilidade, não o conhecimento: todos precisam saber explicar o documento inteiro.</p>
+    </div>
+    <div class="team">
+      <article class="member"><div class="avatar">LT</div><h3>Leonardo Teixeira</h3><p>Coordenação e gerente do projeto</p><p class="secs">Seções 1, 2, 3.1–3.2, 9</p></article>
+      <article class="member"><div class="avatar">LM</div><h3>Luca Magalhães</h3><p>Escopo, protótipos e qualidade</p><p class="secs">Seções 3.3–3.4, 4.4, 8</p></article>
+      <article class="member"><div class="avatar">EC</div><h3>Eduardo Cabral</h3><p>Elicitação e requisitos</p><p class="secs">Seções 4.1–4.5, 5</p></article>
+      <article class="member"><div class="avatar">SH</div><h3>Sergio Henriques</h3><p>EAP, cronograma e backlog</p><p class="secs">Seções 6, 7, 9.3</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="avaliacao">
+  <div class="container">
+    <div class="head">
+      <span class="kicker">Avaliação</span>
+      <h2>Como a nota é composta</h2>
+      <p>Cada critério vale 100% (pleno), 75% (bom), 50% (parcial) ou 0–25% (insuficiente). O bônus de até 0,5 soma à nota, limitada a 10.</p>
+    </div>
+    <div class="score">
+      <article class="scorebox">
+        <strong>7,0</strong>
+        <h3>Nota do grupo</h3>
+        <div class="bar-row"><span>Elicitação, protótipo e requisitos</span><b>2,0</b><span class="bar"><i style="width:57%"></i></span></div>
+        <div class="bar-row"><span>TAP, escopo e viabilidade</span><b>1,5</b><span class="bar"><i style="width:43%"></i></span></div>
+        <div class="bar-row"><span>EAP, marcos e cronograma</span><b>1,5</b><span class="bar"><i style="width:43%"></i></span></div>
+        <div class="bar-row"><span>Backlog e estimativas</span><b>1,5</b><span class="bar"><i style="width:43%"></i></span></div>
+        <div class="bar-row"><span>Coerência entre os documentos</span><b>0,5</b><span class="bar"><i style="width:14%"></i></span></div>
+      </article>
+      <article class="scorebox green">
+        <strong>3,0</strong>
+        <h3>Nota individual</h3>
+        <div class="bar-row"><span>Perguntas individuais em 08/12</span><b>1,0</b><span class="bar"><i style="width:33%"></i></span></div>
+        <div class="bar-row"><span>Avaliação por pares (01/12)</span><b>1,0</b><span class="bar"><i style="width:33%"></i></span></div>
+        <div class="bar-row"><span>Acompanhamentos semanais</span><b>0,5</b><span class="bar"><i style="width:17%"></i></span></div>
+        <div class="bar-row"><span>Contribuição rastreável</span><b>0,5</b><span class="bar"><i style="width:17%"></i></span></div>
+      </article>
+    </div>
+    <div class="rules">
+      <h3>Regras importantes</h3>
+      <div class="rules-grid">
+        <p><b>Prazo:</b> se nada for entregue em 08/12, a nota do projeto inteiro é zero.</p>
+        <p><b>Evidências:</b> sem artefato de apoio, o critério não passa de 50%.</p>
+        <p><b>IA:</b> permitida só como apoio, com uso declarado, referenciado e conferido.</p>
+        <p><b>Comunidade:</b> pedir consentimento e não expor dados pessoais.</p>
+        <p><b>Rastreabilidade:</b> atas, histórico do repositório e responsável por seção.</p>
+        <p><b>Coerência:</b> todo requisito Essencial tem ao menos uma história.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="apresentacao">
+  <div class="container">
+    <div class="head">
+      <span class="kicker">08/12 · 12 minutos por equipe</span>
+      <h2>Roteiro da apresentação</h2>
+      <p>7 minutos de apresentação, 1 minuto de tolerância e 4 minutos de perguntas individuais. Cada minuto excedido custa 0,25 ponto. Todos falam, mostrando os artefatos reais.</p>
+    </div>
+    <div class="pitch">
+      <article class="slot"><span class="min">1 min</span><h3>Contexto e público</h3><p>Leonardo: instituição, problema e objetivo SMART.</p></article>
+      <article class="slot"><span class="min">2 min</span><h3>Escopo, elicitação e requisitos</h3><p>Eduardo: técnicas aplicadas, evidências, RF/RNF e MoSCoW.</p></article>
+      <article class="slot"><span class="min">2 min</span><h3>Planejamento e backlog</h3><p>Sergio: EAP, Gantt, quadro e Planning Poker.</p></article>
+      <article class="slot"><span class="min">2 min</span><h3>Protótipos e lições</h3><p>Luca: telas validadas, MVP opcional e o que mudou desde o TAP.</p></article>
+    </div>
+    <p class="note">Perguntas típicas do professor: “Por que este requisito é Essencial?”, “Mostre no quadro ou no protótipo onde ele aparece”, “O que mudou desde o TAP?”.</p>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div><strong>Projeto Extensionista · SCCD</strong><br>Ciência da Computação · Engenharia de Software<br>Prof. Fernando Marlon Soares Figueiredo</div>
+    <div>Leonardo Teixeira · Luca Magalhães · Eduardo Cabral · Sergio Henriques<br>Entrega: 08/12/2026</div>
+  </div>
+</footer>
+</body>
+</html>
