@@ -18,7 +18,7 @@ Menor versão funcional do sistema (seção 8 do documento, opção A). Cobre as
 | Consultar | H03, H04, H05 | RF003, RF004, RF005 |
 | Doadores | H01 | RF001, RD003 (telefone só com autorização), RNF003 |
 | Resumo (coordenação) | H06 | RF006 |
-| Usuários (coordenação) | — | criação de voluntários e cópia de segurança |
+| Usuários (coordenação) | — | criação de voluntários, cópia de segurança e **dados de exemplo** para demonstração |
 
 ## Como o código está organizado
 

@@ -1,7 +1,7 @@
 # Projeto Extensionista — Sistema de Cadastro e Controle de Doações (SCCD)
 
 Trabalho da disciplina **Engenharia de Software** (Ciência da Computação), Prof. Fernando Marlon Soares Figueiredo.
-Entrega e apresentação: **terça, 08/12/2026**.
+Entrega e apresentação: **25/11/2026** (antecipadas pelo professor; antes eram em 08/12).
 
 **Equipe:** Leonardo Teixeira (coordenação), Luca Magalhães (escopo, protótipos e qualidade), Eduardo Cabral (requisitos) e Sergio Henriques (planejamento e backlog).
 
@@ -9,7 +9,7 @@ Entrega e apresentação: **terça, 08/12/2026**.
 
 | Arquivo | O que é |
 |---|---|
-| [`Projeto_Extensionista_Controle_de_Doacoes.docx`](Projeto_Extensionista_Controle_de_Doacoes.docx) | Documento final (v0.3), com as nove seções exigidas. Trechos **em amarelo** são pendências. |
+| [`Projeto_Extensionista_Controle_de_Doacoes.docx`](Projeto_Extensionista_Controle_de_Doacoes.docx) | Documento final (v1.0), com as nove seções exigidas, a situação na entrega e o plano de continuidade. |
 | [`index.html`](index.html) | Portal da equipe: andamento dos entregáveis, cronograma, requisitos, avaliação e roteiro da apresentação. |
 | `Projeto Extensionista Documentação, Entregáveis e Avaliação.pdf` | Enunciado e rubrica do professor. |
 | [`anexos/H_Kit_de_contato_e_autorizacao.docx`](anexos/H_Kit_de_contato_e_autorizacao.docx) | Mensagens para contatar instituições, termo de autorização, registro de contatos e questionário para o Google Forms. |
@@ -24,12 +24,10 @@ Entrega e apresentação: **terça, 08/12/2026**.
 
 Para ver o portal, abra o `index.html` no navegador ou ative o GitHub Pages (Settings → Pages → branch `main`).
 
-## Próximos passos
+## Próximos passos (plano de continuidade, após a entrega)
 
-1. **Até 25/11:** definir a instituição parceira e registrar a autorização (Leonardo).
-2. **24/11:** fazer a sessão de Planning Poker e preencher a seção 7.3 (Sergio e equipe).
-3. **26–28/11:** aplicar entrevista, questionário e análise de documentos (Eduardo e Luca).
-4. **Até 02/12:** validar requisitos e protótipos com a instituição.
-5. **Até 07/12:** remover os destaques amarelos, atualizar o controle de versões e ensaiar a apresentação.
-
-A lista completa está no checklist ao final do documento.
+1. **C1 · até 27/11:** obter a autorização da instituição (Leonardo).
+2. **C2 · até 30/11:** aplicar entrevista, questionário e análise de documentos (Eduardo e Luca).
+3. **C3 · até 02/12:** revisar requisitos e personas com as respostas reais (Eduardo).
+4. **C4 · até 04/12:** validar wireframes e testar o MVP com 2 voluntários (Luca).
+5. **C5 · até 06/12:** atualizar o documento (v1.1) e devolvê-lo à instituição (Sergio e equipe).

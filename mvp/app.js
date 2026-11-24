@@ -366,9 +366,48 @@ function telaUsuarios() {
     h("section", { class: "cartao" },
       h("ul", { class: "lista" }, usuarios.map((u) => h("li", {}, `${u.nome} (${u.usuario})`, h("small", {}, u.perfil === Regras.PERFIS.COORDENACAO ? "coordenação" : "voluntário"))))),
     h("section", { class: "cartao" },
+      h("h2", {}, "Dados de exemplo"),
+      h("p", {}, "Para demonstração: adiciona 3 doadores e 12 doações fictícias do mês atual e do anterior, todos marcados como “(exemplo)”."),
+      h("button", { onclick: carregarExemplo }, "Carregar dados de exemplo")),
+    h("section", { class: "cartao" },
       h("h2", {}, "Cópia de segurança"),
       h("p", {}, "Os dados ficam só neste navegador. Exporte uma cópia com frequência."),
       h("button", { onclick: exportar }, "Exportar doações e doadores (JSON)")));
+}
+
+// Dados fictícios só para demonstrar o sistema (não são dados de nenhuma instituição).
+function carregarExemplo() {
+  if (!confirm("Adicionar dados de exemplo para demonstração?")) return;
+  const agora = Date.now();
+  const doadores = [
+    { id: "ex1", nome: "Mercadinho do Bairro (exemplo)", telefone: "", autorizouContato: false, criadoEm: agora },
+    { id: "ex2", nome: "Paróquia vizinha (exemplo)", telefone: "", autorizouContato: false, criadoEm: agora },
+    { id: "ex3", nome: "Família Souza (exemplo)", telefone: "(83) 90000-0000", autorizouContato: true, criadoEm: agora },
+  ];
+  const hoje = new Date();
+  const dia = (mesesAtras, d) => {
+    const x = new Date(hoje.getFullYear(), hoje.getMonth() - mesesAtras, Math.min(d, 28));
+    return new Date(x.getTime() - x.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+  };
+  const base = [
+    [0, 2, "Alimento", "Arroz tipo 1", 20, "kg", "ex1"], [0, 3, "Alimento", "Feijão carioca", 10, "kg", "ex1"],
+    [0, 5, "Higiene", "Sabonete", 24, "un", "ex2"], [0, 8, "Roupa", "Camisetas infantis", 15, "un", null],
+    [0, 10, "Alimento", "Leite em pó", 6, "un", "ex3"], [0, 12, "Outro", "Cobertores", 4, "un", "ex2"],
+    [1, 4, "Alimento", "Macarrão", 12, "pacote", "ex1"], [1, 9, "Higiene", "Pasta de dente", 18, "un", null],
+    [1, 15, "Roupa", "Calças", 8, "un", "ex2"], [1, 18, "Alimento", "Óleo de soja", 9, "L", "ex1"],
+    [1, 22, "Alimento", "Açúcar", 10, "kg", null], [1, 26, "Higiene", "Fraldas", 3, "pacote", "ex3"],
+  ];
+  const doacoes = base.map(([m, d, categoria, descricao, quantidade, unidade, doadorId], i) => ({
+    id: "exd" + i, data: dia(m, d), categoria, descricao: descricao + " (exemplo)", quantidade, unidade,
+    observacao: "", doadorId, registradoPor: estado.usuario.nome, criadoEm: agora + i,
+  })).filter((x) => x.data <= hojeISO());
+  const semRepetir = (lista, novos) => [...lista.filter((x) => !novos.some((n) => n.id === x.id)), ...novos];
+  Banco.gravar("doadores", semRepetir(Banco.ler("doadores"), doadores));
+  Banco.gravar("doacoes", semRepetir(Banco.ler("doacoes"), doacoes));
+  ir("consultar", {
+    mensagem: `${doacoes.length} doações de exemplo carregadas.`,
+    filtros: { inicio: "", fim: "", categoria: "", texto: "" }, // limpa filtros antigos para mostrar tudo
+  });
 }
 
 // ---------------------------------------------------------------- Início
